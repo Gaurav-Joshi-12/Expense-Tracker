@@ -17,9 +17,11 @@ package com.sgt.expense_tracker.Model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+
 public class Category {
     int categoryId;
     int userId;
@@ -28,4 +30,8 @@ public class Category {
     String iconUrl;
     String transactionType;
     int activeYn;
+
+
+    public String toString(){
+        return "categoryId: "+categoryId+" userId: "+userId+" categoryName: "+categoryName+" desc: "+description+" iconUrl: "+iconUrl+" transactionType: "+transactionType;}
 }

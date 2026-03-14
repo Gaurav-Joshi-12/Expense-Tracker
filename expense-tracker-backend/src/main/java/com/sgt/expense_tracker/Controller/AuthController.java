@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.LoginException;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
     @Autowired
@@ -36,17 +35,17 @@ public class AuthController {
     }
 
 
-    @GetMapping("/login")
-    public ResponseEntity<?> loggedInUser(@RequestBody User user){
-        try{
-            logger.info("Reached login");
-            User user1 = authService.userLogin(user.getUsername(), user.getPassword());
-            return ResponseEntity.ok().body(Map.of("body","Logged In Successfully"));
-        } catch (LoginException e) {
-            logger.info(e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("body","Not valid username or password"));
-        }
-    }
+//    @GetMapping("/login")
+//    public ResponseEntity<?> loggedInUser(@RequestBody User user){
+//        try{
+//            logger.info("Reached login");
+//            User user1 = authService.userLogin(user.getUsername(), user.getPassword());
+//            return ResponseEntity.ok().body(Map.of("body","Logged In Successfully"));
+//        } catch (LoginException e) {
+//            logger.info(e.getMessage());
+//            return ResponseEntity.badRequest().body(Map.of("body","Not valid username or password"));
+//        }
+//    }
 
     @PostMapping("/forgot-password")
     public void forgotPassword(@RequestBody Map<String,String> body){

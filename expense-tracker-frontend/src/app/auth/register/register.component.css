@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+
+:host {
+  /* --- Dark Mode Palette --- */
+  
+  /* Primary Accent: Lighter Teal/Cyan for visibility on dark */
+  --primary-color: #2dd4bf;       /* Teal 400 */
+  --primary-hover: #14b8a6;       /* Teal 500 */
+  --primary-glow: rgba(45, 212, 191, 0.3);
+
+  /* Backgrounds: Deep Slate (Premium Dark) */
+  --bg-color: #0f172a;            /* Slate 900 */
+  --card-bg: #1e293b;             /* Slate 800 */
+  --input-bg: #0f172a;            /* Darker input background */
+  
+  /* Text Colors */
+  --text-main: #f1f5f9;           /* Off-white */
+  --text-muted: #94a3b8;          /* Slate 400 */
+  --input-placeholder: #475569;   /* Slate 600 */
+  
+  /* Borders & States */
+  --border-color: #334155;        /* Slate 700 */
+  --focus-border: #2dd4bf;
+  
+  /* Status Colors */
+  --error-color: #f87171;         /* Red 400 (Softer red for dark mode) */
+  --error-bg: rgba(248, 113, 113, 0.1);
+  
+  --radius-md: 12px;
+  --radius-lg: 24px;
+}
+
+* { box-sizing: border-box; }
+
+/* --- Layout --- */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  padding: 20px;
+}
+
+/* --- Dark Background Glows (Replaces Blobs) --- */
+/* These provide a subtle ambient light */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.25; /* Low opacity for subtlety */
+}
+.glow-1 {
+  width: 400px;
+  height: 400px;
+  background: var(--primary-color);
+  top: -100px;
+  left: -100px;
+}
+.glow-2 {
+  width: 300px;
+  height: 300px;
+  background: #6366f1; /* Indigo splash for contrast */
+  bottom: -50px;
+  right: -50px;
+}
+
+/* --- Card Design --- */
+.register-card {
+  position: relative;
+  z-index: 10;
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-lg);
+  /* Dark mode shadow: subtle and spread out */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+  border: 1px solid var(--border-color);
+}
+
+/* --- Header --- */
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  background: rgba(45, 212, 191, 0.1); /* Low opacity teal bg */
+  color: var(--primary-color);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+  border: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.75rem;
+  color: var(--text-main);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* --- Form --- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Input Wrapper & Icons */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--input-placeholder);
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+
+input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+input::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* Interaction States */
+input:focus {
+  outline: none;
+  border-color: var(--focus-border);
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.1); /* Subtle teal glow */
+  background: #151e32; /* Slightly lighten bg on focus */
+}
+
+input:focus + .input-icon,
+.input-wrapper:focus-within .input-icon {
+  color: var(--primary-color);
+}
+
+/* Error State */
+input.error-border {
+  border-color: var(--error-color);
+  background-color: rgba(248, 113, 113, 0.05);
+}
+input.error-border:focus {
+  box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1);
+}
+
+.error-msg {
+  color: var(--error-color);
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+/* --- Button --- */
+.submit-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--primary-color);
+  color: #0f172a; /* Dark text on bright button for contrast */
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 0 15px var(--primary-glow);
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  background: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* --- Footer --- */
+.login-link {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
+
+.login-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.login-link a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* --- Mobile --- */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .register-card {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 2rem 1.5rem;
+    background: var(--bg-color); /* Merge card with bg on mobile */
+  }
+  .glow { display: none; }
+}

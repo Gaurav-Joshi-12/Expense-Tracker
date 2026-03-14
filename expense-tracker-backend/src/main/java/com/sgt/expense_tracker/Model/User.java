@@ -13,4 +13,5 @@ public class User {
     String email;
     String mobileNo;
     int activeYn;
+
 }

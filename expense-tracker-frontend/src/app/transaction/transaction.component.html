@@ -1,0 +1,96 @@
+<div class="page-container">
+  
+    <div class="card form-card">
+      <div class="card-header">
+        <h2>Add Transaction</h2>
+        <p class="subtitle">Record a new transaction</p>
+      </div>
+  
+      <form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()">
+        
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <div class="input-wrapper amount-wrapper">
+            <span class="currency-symbol">$</span>
+            <input 
+              type="number" 
+              id="amount" 
+              formControlName="amount" 
+              placeholder="0.00" 
+              class="amount-input" 
+              step="0.01"
+            />
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <div class="label-row">
+            <label for="category">Category</label>
+            <a class="add-new-link" routerLink="/category">+ Add New</a>
+          </div>
+          <select id="category" formControlName="categoryId">
+            <option value="" disabled selected>Select a category...</option>
+            <option *ngFor="let cat of categories" [value]="cat.categoryId">
+              {{ cat.categoryName }}
+            </option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input 
+            type="date" 
+            id="date" 
+            formControlName="transactionDate"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea 
+            id="notes" 
+            formControlName="notes" 
+            rows="3" 
+            placeholder="What was this for?"
+          ></textarea>
+        </div>
+  
+        <button type="submit" class="btn-primary submit-btn" [disabled]="transactionForm.invalid">
+          Save Transaction
+        </button>
+        
+      </form>
+    </div>
+  
+    <div class="card">
+      <div class="card-header">
+        <h2>Recent Transactions</h2>
+        <p class="subtitle">Your latest financial activity</p>
+      </div>
+  
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Details</th>
+              <th style="text-align: right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: #94a3b8; font-size: 0.85rem;">Oct 24, 2023</td>
+              <td>
+                <div style="font-weight: 500; color: #fff;">Groceries</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Walmart run</div>
+              </td>
+              <td style="text-align: right; font-weight: 600; color: #f87171;">
+                -$145.20
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </div>

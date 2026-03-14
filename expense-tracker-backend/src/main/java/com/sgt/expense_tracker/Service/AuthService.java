@@ -110,5 +110,9 @@ public class AuthService {
 
     }
 
+    public User findUserByEmail(String email){
+        return authRepository.findByEmail(email);
+    }
+
 
 }

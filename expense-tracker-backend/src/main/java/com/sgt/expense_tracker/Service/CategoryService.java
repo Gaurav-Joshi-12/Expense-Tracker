@@ -29,6 +29,18 @@ public class CategoryService {
         categoryRepository.createCategory(userId,categoryName,description,iconUrl,transactionType);
     }
 
+    public void updateCategory(int categoryId,Category category , int userId){
+
+        String categoryName = category.getCategoryName();
+        String description = category.getDescription();
+        String iconUrl = category.getIconUrl();
+        String transactionType = category.getTransactionType();
+        Integer val = categoryRepository.doesCategoryExists(userId,categoryName,transactionType);
+        if(val != null) throw new CategoryDoesNotExist("Category does not exist");
+
+        categoryRepository.updateCategory(categoryId,userId,categoryName,description,iconUrl,transactionType);
+
+    }
 
     public void updateCategoryTransactionType(int categoryId ,String transactionType ){
         Integer count = categoryRepository.findCategoryById(categoryId);
@@ -47,13 +59,15 @@ public class CategoryService {
 //
 //    }
 
-    public void deleteCategoryOfUser(int categoryId ){
+    public void deleteCategoryOfUser(int categoryId,int userId ){
 //        Integer id = categoryRepository.findUserByCategoryId(categoryId);
 //        if(id != userId)  throw new InvalidCategory("Category Not present to delete");
         Integer id = categoryRepository.findCategoryById(categoryId);
         if(id == null) throw new CategoryDoesNotExist("Category Does Not exist");
-        categoryRepository.deleteCategoryOfUser(categoryId);
+        categoryRepository.deleteCategoryOfUser(categoryId,userId);
 
     }
+
+
 
 }
