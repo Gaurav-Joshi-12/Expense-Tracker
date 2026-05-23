@@ -6,6 +6,7 @@ import { ForgotPassComponent } from './auth/forgot-pass/forgot-pass.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { CategoryPageComponent } from './category/category-page/category-page.component';
 import { TransactionComponent } from './transaction/transaction.component';
+import { ChartComponent } from './chart/chart.component';
 
 
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'category', component: CategoryPageComponent },
   {path: 'transaction', component: TransactionComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {path : 'chart', component: ChartComponent },
   { path: '**', redirectTo: 'login' },
   
 ];

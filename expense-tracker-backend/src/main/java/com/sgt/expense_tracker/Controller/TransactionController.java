@@ -3,6 +3,7 @@ package com.sgt.expense_tracker.Controller;
 import com.sgt.expense_tracker.Model.Category;
 import com.sgt.expense_tracker.Model.Transaction;
 import com.sgt.expense_tracker.Model.User;
+import com.sgt.expense_tracker.Service.AiService;
 import com.sgt.expense_tracker.Service.AuthService;
 import com.sgt.expense_tracker.Service.TransactionService;
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ public class TransactionController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    AiService aiService;
+
     private static Logger logger = LoggerFactory.getLogger(TransactionController.class);
     @PostMapping
     public ResponseEntity<Map<String, String>> createCategory(@RequestBody Transaction transaction, org.springframework.security.core.Authentication auth ){
@@ -43,7 +47,7 @@ public class TransactionController {
     }
 
     @GetMapping
-   public ResponseEntity<?> getTransaction(@RequestParam(name = "category" , required= false)String category, @RequestParam(name = "start" , required= false) LocalDate start, @RequestParam(name = "end" , required= false) LocalDate end,@RequestParam(name = "type" , required= false)String type,@RequestParam(name = "sortColumn" , required= false)String sortColumn,@RequestParam(name = "sortDir" , required= false , defaultValue = "DESC") String sortDir ,@RequestParam(name = "rowsPerPage" , required= false , defaultValue = "1") Integer rowsPerPage,@RequestParam(name = "pageNo" , required= false , defaultValue = "1") Integer pageNo, org.springframework.security.core.Authentication auth){
+   public ResponseEntity<?> getTransaction(@RequestParam(name = "category" , required= false)String category, @RequestParam(name = "start" , required= false) LocalDate start, @RequestParam(name = "end" , required= false) LocalDate end,@RequestParam(name = "type" , required= false)String type,@RequestParam(name = "sortColumn" , required= false)String sortColumn,@RequestParam(name = "sortDir" , required= false , defaultValue = "DESC") String sortDir ,@RequestParam(name = "rowsPerPage" , required= false , defaultValue = "10") Integer rowsPerPage,@RequestParam(name = "pageNo" , required= false , defaultValue = "1") Integer pageNo, org.springframework.security.core.Authentication auth){
        try{
            User user = authService.findUserByEmail(auth.getName());
            int id = user.getUserId();
@@ -57,9 +61,17 @@ public class TransactionController {
     }
 
     @PostMapping("/bulk-upload")
-    public void bulkUpload(@RequestParam(name="file")MultipartFile file, org.springframework.security.core.Authentication auth) throws IOException {
+    public ResponseEntity<List<List<String>>> bulkUpload(@RequestParam(name="file")MultipartFile file, org.springframework.security.core.Authentication auth) throws IOException {
         System.out.println(file.getOriginalFilename());
         int id = authService.findUserByEmail(auth.getName()).getUserId();
-        transactionService.read(file,id);
+        List<List<String>> result = transactionService.read(file,id);
+        return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/suggest-category/{note}")
+    public String suggestCategory(@PathVariable(name = "note") String note){
+        return aiService.suggestCategory(note,List.of("food,clothing,entertainment"));
+
+    }
+
 }

@@ -12,6 +12,7 @@ import { ForgotPassComponent } from './auth/forgot-pass/forgot-pass.component';
 import { AuthModuleModule } from './auth/auth.module';
 import { CategoryPageComponent } from './category/category-page/category-page.component';
 import { TransactionComponent } from './transaction/transaction.component';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TransactionComponent } from './transaction/transaction.component';
     RegisterComponent,
     ForgotPassComponent,
     CategoryPageComponent,
-    TransactionComponent
+    TransactionComponent,
+    ChartComponent
     
   ],
   imports: [

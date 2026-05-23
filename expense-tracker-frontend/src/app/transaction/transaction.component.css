@@ -1,234 +1,168 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
-
-:host {
-  /* Shared Variables */
-  --primary: #2dd4bf;
-  --primary-hover: #14b8a6;
-  --bg-page: #0f172a;
-  --bg-card: #1e293b;
-  --border: #334155;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  
-  --income-color: #34d399;
-  --expense-color: #f87171;
-
-  display: block;
-  min-height: 100vh;
-  background-color: var(--bg-page);
-  color: var(--text-main);
-  font-family: 'Inter', sans-serif;
-  padding: 2rem;
-  box-sizing: border-box;
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-* { box-sizing: border-box; }
-
-/* --- Layout Grid --- */
-.page-container {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  align-items: stretch;
-  min-height: 600px;
+.page-title {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
-/* --- Common Card Style --- */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.form-card,
+.table-card {
+  background: white;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.card-header {
-  margin-bottom: 2rem;
-}
-
-h2 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.5rem;
-  margin: 0;
-  color: var(--text-main);
-}
-
-.subtitle {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-top: 0.5rem;
-}
-
-/* --- Form Styles --- */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  flex-grow: 1;
-}
+/* FORM */
 
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
 }
 
 label {
-  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: 5px;
 }
 
-/* "Add New" Link Layout */
-.label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.label-row label {
-  margin-bottom: 0;
-}
-
-.add-new-link {
-  font-size: 0.8rem;
-  color: var(--primary);
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.add-new-link:hover {
-  color: var(--text-main);
-  text-decoration: underline;
-}
-
-/* Inputs, Selects, Textareas */
-input[type="text"], 
-input[type="number"], 
-input[type="date"], 
-select, 
+input,
+select,
 textarea {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  background: #0f172a;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-main);
-  font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.2s;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 textarea {
-  resize: vertical;
-  min-height: 80px;
+  resize: none;
 }
 
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.1);
+/* BUTTONS */
+
+.btn-group {
+  margin-top: 15px;
 }
 
-/* --- Custom Amount Input (Big & Bold) --- */
-.amount-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.currency-symbol {
-  position: absolute;
-  left: 1.25rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.amount-input {
-  font-size: 1.5rem !important;
-  font-weight: 700;
-  padding-left: 2.5rem !important;
-  height: 3.5rem;
-  color: var(--text-main) !important;
-}
-
-.amount-input::-webkit-outer-spin-button,
-.amount-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.amount-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-/* --- Submit Button --- */
-.submit-btn {
-  margin-top: auto; 
-  padding: 0.9rem;
-  background: var(--primary);
-  color: #0f172a;
+.btn {
+  padding: 8px 16px;
+  margin-right: 10px;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.submit-btn:hover:not(:disabled) {
-  background: var(--primary-hover);
-  transform: translateY(-1px);
+.primary {
+  background: #007bff;
+  color: white;
 }
 
-.submit-btn:disabled {
-  background: var(--border);
-  color: var(--text-muted);
-  cursor: not-allowed;
+.secondary {
+  background: #6c757d;
+  color: white;
 }
 
-/* --- Table Styles (Right Column) --- */
-.table-container {
-  overflow-x: auto;
+.primary:hover {
+  background: #0056b3;
 }
+
+.secondary:hover {
+  background: #545b62;
+}
+
+/* TABLE */
 
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
 }
 
-th {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
+thead {
+  background: #f5f5f5;
 }
 
+th,
 td {
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-  font-size: 0.9rem;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
 }
 
-tr:last-child td {
-  border-bottom: none;
+tr:hover {
+  background: #fafafa;
 }
 
-/* --- Responsive --- */
-@media (max-width: 900px) {
-  .page-container {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
+/* BADGES */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: white;
+}
+
+.expense {
+  background: #e74c3c;
+}
+
+.income {
+  background: #2ecc71;
+}
+
+/* ACTION BUTTONS */
+
+.actions button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #f39c12;
+  color: white;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #d68910;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+}
+
+.bulk-upload{
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.upload-btn{
+  margin-left: 10px;
+  background: #27ae60;
+  color: white;
+}
+
+.upload-btn:hover{
+  background: #1e8449;
 }

@@ -1,0 +1,75 @@
+<div class="chart-container">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h2 class="page-title">📊 Financial Dashboard</h2>
+    <p class="page-subtitle">Visual breakdown of your income, expenses & savings</p>
+  </div>
+
+  <!-- LOADING STATE -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading your financial data...</p>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="error-card" *ngIf="errorMessage">
+    <p>⚠️ {{ errorMessage }}</p>
+    <button class="btn retry-btn" (click)="loadChartData()">Retry</button>
+  </div>
+
+  <!-- CHARTS GRID -->
+  <div class="charts-grid" *ngIf="!isLoading && !errorMessage">
+
+    <!-- ROW 1: Pie Charts side by side -->
+    <div class="chart-row pie-row">
+
+      <!-- Income Pie Chart -->
+      <div class="chart-card">
+        <div class="card-header income-header">
+          <span class="card-icon">💰</span>
+          <h3>Income Distribution</h3>
+        </div>
+        <div class="chart-wrapper pie-wrapper">
+          <canvas id="incomePieChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Expense Pie Chart -->
+      <div class="chart-card">
+        <div class="card-header expense-header">
+          <span class="card-icon">💸</span>
+          <h3>Expense Distribution</h3>
+        </div>
+        <div class="chart-wrapper pie-wrapper">
+          <canvas id="expensePieChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ROW 2: Income vs Expense Line Chart (full width) -->
+    <div class="chart-card full-width">
+      <div class="card-header trend-header">
+        <span class="card-icon">📈</span>
+        <h3>Income vs Expense Trend</h3>
+      </div>
+      <div class="chart-wrapper line-wrapper">
+        <canvas id="incomeVsExpenseChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ROW 3: Savings Chart (full width) -->
+    <div class="chart-card full-width">
+      <div class="card-header savings-header">
+        <span class="card-icon">🏦</span>
+        <h3>Monthly Savings</h3>
+      </div>
+      <div class="chart-wrapper line-wrapper">
+        <canvas id="savingsChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+</div>

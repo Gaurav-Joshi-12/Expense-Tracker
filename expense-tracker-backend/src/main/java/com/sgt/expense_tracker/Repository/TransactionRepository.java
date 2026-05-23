@@ -71,8 +71,8 @@ public class TransactionRepository {
         }
 
 
-        System.out.println(query.toString());
-        System.out.println(params);
+        System.out.println(query);
+//        System.out.println(params);
         return jdbcTemplate.query(query.toString(),(resultSet,rowNum)->{
                 Transaction t = new Transaction();
                 t.setTransactionId(resultSet.getInt("transaction_id"));
@@ -90,4 +90,6 @@ public class TransactionRepository {
 //        return transactions;
 
     }
+
+
 }

@@ -18,24 +18,24 @@ import { Observable } from 'rxjs';
 export class TransactionService {
 
   // Replace this with your actual backend API URL
-  private apiUrl = 'http://localhost:8080/api/transactions'; 
+  private apiUrl = 'http://localhost:8081/api/transaction'; 
 
   constructor(private http: HttpClient) { }
 
   /**
    * READ: Get all transactions for a specific user
    */
-  getAllTransactions(userId: number): Observable<any> {
+  getAllTransactions(): Observable<any> {
     // Example endpoint: GET /api/transactions/user/1
-    return this.http.get(`${this.apiUrl}/user/${userId}`);
+    return this.http.get(`${this.apiUrl}`,{withCredentials:true});
   }
 
   /**
    * CREATE: Add a new transaction
    */
-  createTransaction(userId: number, transactionData: any): Observable<any> {
+  createTransaction(transactionData: any): Observable<any> {
     // Example endpoint: POST /api/transactions/user/1
-    return this.http.post(`${this.apiUrl}/user/${userId}`, transactionData);
+    return this.http.post(`${this.apiUrl}`, transactionData,{withCredentials:true});
   }
 
   /**
@@ -43,7 +43,7 @@ export class TransactionService {
    */
   updateTransaction(transactionId: number, transactionData: any): Observable<any> {
     // Example endpoint: PUT /api/transactions/15
-    return this.http.put(`${this.apiUrl}/${transactionId}`, transactionData);
+    return this.http.put(`${this.apiUrl}/${transactionId}`, transactionData,{withCredentials:true});
   }
 
   /**
@@ -51,13 +51,18 @@ export class TransactionService {
    */
   deleteTransaction(transactionId: number): Observable<any> {
     // Example endpoint: DELETE /api/transactions/15
-    return this.http.delete(`${this.apiUrl}/${transactionId}`);
+    return this.http.delete(`${this.apiUrl}/${transactionId}`,{withCredentials:true});
   }
   
   /**
    * (Optional but Recommended): Get a summary/total for dashboard
    */
   getTransactionSummary(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user/${userId}/summary`);
+    return this.http.get(`${this.apiUrl}/user/${userId}/summary`,{withCredentials:true});
   }
+
+  bulkUpload(file: any) {
+    return this.http.post("http://localhost:8081/api/transaction/bulk-upload", file,{withCredentials:true});
+  }
+
 }

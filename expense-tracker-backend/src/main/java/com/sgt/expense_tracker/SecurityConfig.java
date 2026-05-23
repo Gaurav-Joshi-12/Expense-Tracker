@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .cors(cors-> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/register","/login,/forgot-password").permitAll()
+                        .requestMatchers("/register","/login","/forgot-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form->form.loginProcessingUrl("/login")

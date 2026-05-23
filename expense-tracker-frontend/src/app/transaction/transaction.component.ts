@@ -215,10 +215,10 @@ export class TransactionComponent implements OnInit {
     console.log(this.transactionForm.value);
     let value = this.transactionForm.value;
     
-    let userId = 1; // Hardcoded exactly like your category component
+    // let userId = 1; // Hardcoded exactly like your category component
 
     if (!this.isEditOn) {
-      this.transactionService.createTransaction(userId, value).subscribe({
+      this.transactionService.createTransaction(value).subscribe({
         next: () => {
           console.log("Transaction Created Successfully");
           alert("Transaction created successfully");
@@ -288,8 +288,8 @@ export class TransactionComponent implements OnInit {
   }
   
   loadTransactions() {
-    let userId = 1;
-    this.transactionService.getAllTransactions(userId).subscribe({
+    // let userId = 1;
+    this.transactionService.getAllTransactions().subscribe({
       next: (res: any) => {
         this.transactions = res;
       },
@@ -318,5 +318,45 @@ export class TransactionComponent implements OnInit {
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  selectedFile!: File | null;
+  onFileSelected(event: any) {
+
+    const file = event.target.files[0];
+    console.log(file);
+    if (file && file.name.endsWith('.csv')) {
+      this.selectedFile = file;
+    } else {
+      alert("Please upload a valid CSV file");
+      this.selectedFile = null;
+    }
+  
+  }
+  
+  
+  uploadCSV() {
+  
+    
+    if (!this.selectedFile) {
+      alert("Please select a file first");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("file", this.selectedFile);
+  
+    this.transactionService.bulkUpload(formData).subscribe({
+      next: () => {
+        alert("CSV Uploaded Successfully");
+        this.selectedFile = null;
+        this.loadTransactions();
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Error uploading CSV");
+      }
+    });
+  
   }
 }

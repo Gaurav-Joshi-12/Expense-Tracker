@@ -2,6 +2,7 @@ package com.sgt.expense_tracker.Model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -36,4 +37,23 @@ public class Transaction {
     int activeYn;
     String categoryName;
     String categoryType;
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", userId=" + userId +
+                ", categoryId=" + categoryId +
+                ", amount=" + amount +
+                ", dateOfTransaction=" + dateOfTransaction +
+                ", notes='" + notes + '\'' +
+                ", activeYn=" + activeYn +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryType='" + categoryType + '\'' +
+                '}';
+    }
+
+
+
+
 }

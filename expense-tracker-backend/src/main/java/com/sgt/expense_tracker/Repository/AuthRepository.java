@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class AuthRepository {
@@ -114,4 +115,22 @@ public class AuthRepository {
         jdbcTemplate.update(sql,userId);
     }
 
+    public List<String> getAllUserEmails(){
+        String sql = "SELECT email FROM users WHERE active_yn = 1";
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
+
+    public List<User> findAll() {
+        return jdbcTemplate.query("Select user_id,name,user_name,mobile_no,email,password, active_yn from users where active_yn = 1;",(resultSet,rowNum) -> {
+            User user1 = new User();
+            user1.setUserId(resultSet.getInt("user_id"));
+            user1.setEmail(resultSet.getString("email"));
+            user1.setUsername(resultSet.getString("user_name"));
+            user1.setName(resultSet.getString("name"));
+            user1.setMobileNo(resultSet.getString("mobile_no"));
+            user1.setActiveYn(resultSet.getInt("active_yn"));
+            user1.setPassword(resultSet.getString("password"));
+            return user1;
+        });
+    }
 }
