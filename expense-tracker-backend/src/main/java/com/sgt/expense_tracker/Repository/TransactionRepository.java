@@ -28,7 +28,7 @@ public class TransactionRepository {
 
 
         System.out.println(category+" "+start+" "+end+" "+type);
-        StringBuilder query = new StringBuilder("select t.transaction_id, t.user_id, t.amount , t.category_id, t.notes, t.date_of_transaction, t.active_yn, c.category_name, c.transaction_type from transactions t inner join categories c on t.category_id = c.category_id where t.user_id = ?");
+        StringBuilder query = new StringBuilder("select t.transaction_id, t.user_id, t.amount , t.category_id, t.notes, t.date_of_transaction, t.active_yn, c.category_name, c.transaction_type from transactions t inner join categories c on t.category_id = c.category_id where t.user_id = ? and c.active_yn = 1");
 
 
         ArrayList<Object> params = new ArrayList<>();

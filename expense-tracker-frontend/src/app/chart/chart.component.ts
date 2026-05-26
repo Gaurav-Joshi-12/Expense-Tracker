@@ -75,7 +75,7 @@ export class ChartComponent implements OnInit {
           data: amounts,
           backgroundColor: this.pieColors.slice(0, labels.length),
           borderWidth: 2,
-          borderColor: '#ffffff',
+          borderColor: '#1e293b',   // match card bg so segments blend into the card
           hoverBorderWidth: 3,
           hoverOffset: 8
         }]
@@ -90,7 +90,8 @@ export class ChartComponent implements OnInit {
               padding: 16,
               usePointStyle: true,
               pointStyleWidth: 12,
-              font: { size: 12, family: 'Arial, sans-serif' }
+              color: '#94a3b8',     // light text so labels are visible on dark bg
+              font: { size: 12, family: 'Inter, sans-serif' }
             }
           },
           tooltip: {
@@ -139,7 +140,7 @@ export class ChartComponent implements OnInit {
           data: amounts,
           backgroundColor: colors.slice(0, labels.length),
           borderWidth: 2,
-          borderColor: '#ffffff',
+          borderColor: '#1e293b',   // match card bg
           hoverBorderWidth: 3,
           hoverOffset: 8
         }]
@@ -154,7 +155,8 @@ export class ChartComponent implements OnInit {
               padding: 16,
               usePointStyle: true,
               pointStyleWidth: 12,
-              font: { size: 12, family: 'Arial, sans-serif' }
+              color: '#94a3b8',
+              font: { size: 12, family: 'Inter, sans-serif' }
             }
           },
           tooltip: {
@@ -236,7 +238,8 @@ export class ChartComponent implements OnInit {
               padding: 20,
               usePointStyle: true,
               pointStyleWidth: 12,
-              font: { size: 13, family: 'Arial, sans-serif', weight: 'bold' }
+              color: '#f1f5f9',     // bright text for legend on dark bg
+              font: { size: 13, family: 'Inter, sans-serif', weight: 'bold' }
             }
           },
           tooltip: {
@@ -256,6 +259,7 @@ export class ChartComponent implements OnInit {
           x: {
             grid: { display: false },
             ticks: {
+              color: '#94a3b8',
               font: { size: 11 },
               maxRotation: 45,
               minRotation: 0
@@ -263,8 +267,9 @@ export class ChartComponent implements OnInit {
           },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(0,0,0,0.06)' },
+            grid: { color: 'rgba(148, 163, 184, 0.1)' },  // subtle grid on dark bg
             ticks: {
+              color: '#94a3b8',
               font: { size: 11 },
               callback: (value: any) => '₹' + value.toLocaleString('en-IN')
             }
@@ -316,7 +321,8 @@ export class ChartComponent implements OnInit {
               padding: 20,
               usePointStyle: true,
               pointStyleWidth: 12,
-              font: { size: 13, family: 'Arial, sans-serif', weight: 'bold' }
+              color: '#f1f5f9',
+              font: { size: 13, family: 'Inter, sans-serif', weight: 'bold' }
             }
           },
           tooltip: {
@@ -338,14 +344,16 @@ export class ChartComponent implements OnInit {
           x: {
             grid: { display: false },
             ticks: {
+              color: '#94a3b8',
               font: { size: 11 },
               maxRotation: 45,
               minRotation: 0
             }
           },
           y: {
-            grid: { color: 'rgba(0,0,0,0.06)' },
+            grid: { color: 'rgba(148, 163, 184, 0.1)' },
             ticks: {
+              color: '#94a3b8',
               font: { size: 11 },
               callback: (value: any) => '₹' + value.toLocaleString('en-IN')
             }

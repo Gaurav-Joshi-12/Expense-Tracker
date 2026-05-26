@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+  GLOBAL STYLES — shared design tokens & resets.
+  These CSS custom properties (variables) are defined on :root so every
+  component in the app can reference them.  This keeps colours, spacing,
+  and typography consistent across all pages (auth, category, transaction,
+  chart, etc.).
+*/
+
+/* ── Google Fonts ──────────────────────────────────────────────────────
+   We import Inter (body) and Poppins (headings) once here instead of
+   repeating @import in every component CSS file.
+   ──────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────────────── */
+:root {
+  /* Primary accent – teal (matches login/register/category pages) */
+  --primary: #2dd4bf;
+  --primary-hover: #14b8a6;
+  --primary-glow: rgba(45, 212, 191, 0.3);
+
+  /* Backgrounds – deep slate (dark mode) */
+  --bg-page: #0f172a;        /* Slate 900 */
+  --bg-card: #1e293b;        /* Slate 800 */
+  --bg-input: #0f172a;       /* Same as page for "sunken" inputs */
+
+  /* Text */
+  --text-main: #f1f5f9;      /* Off-white for readability on dark bg */
+  --text-muted: #94a3b8;     /* Slate 400 */
+
+  /* Borders */
+  --border: #334155;          /* Slate 700 */
+
+  /* Status colours */
+  --income-color: #34d399;
+  --income-bg: rgba(52, 211, 153, 0.15);
+  --expense-color: #f87171;
+  --expense-bg: rgba(248, 113, 113, 0.15);
+  --warning-color: #fbbf24;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* ── Global Reset ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;  /* smoother text rendering on macOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default anchor underline globally */
+a {
+  text-decoration: none;
+  color: inherit;
+}

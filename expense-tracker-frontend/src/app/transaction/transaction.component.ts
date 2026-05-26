@@ -255,7 +255,7 @@ export class TransactionComponent implements OnInit {
     this.transactionForm.patchValue({
       amount: t.amount,
       categoryId: t.categoryId,
-      transactionDate: t.transactionDate, 
+      transactionDate: t.dateOfTransaction, 
       notes: t.notes
     });
   }

@@ -1,0 +1,37 @@
+<!--
+  DASHBOARD — Single-page view combining Charts + Transactions.
+  The child components (<app-chart> and <app-transaction-page>) are
+  embedded as sections.  All their existing logic, bindings, and API
+  calls work exactly as before — only the page-level wrapper has moved
+  here.
+-->
+<div class="dashboard-layout">
+  <!-- ── NAVIGATION BAR ────────────────────────────────────────────── -->
+  <app-navbar></app-navbar>
+
+  <div class="dashboard-page">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+
+    <div class="dashboard-content">
+      <!-- ── LEFT COLUMN: Charts & Header ────────────────────────────── -->
+      <section class="dashboard-section chart-section">
+        <header class="page-header">
+          <h1 class="page-title">Financial Dashboard</h1>
+          <p class="page-subtitle">Charts, transactions &amp; insights — all in one place</p>
+        </header>
+        <div class="scrollable-content">
+          <app-chart></app-chart>
+        </div>
+      </section>
+
+      <!-- ── RIGHT COLUMN: Transactions ──────────────────────────────── -->
+      <section class="dashboard-section transaction-section">
+        <div class="scrollable-content">
+          <app-transaction-page></app-transaction-page>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

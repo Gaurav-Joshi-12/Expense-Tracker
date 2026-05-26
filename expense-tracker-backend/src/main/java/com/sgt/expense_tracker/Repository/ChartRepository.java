@@ -17,10 +17,11 @@ public class ChartRepository {
 
     public List<PieChartModel> getPieChartIncomeData(int userId){
         String sql = "select c.category_name as CATEGORY,sum(t.amount) as AMOUNT from categories c\n" +
-                "join transactions t \n" +
-                "on c.category_id = t.category_id \n" +
+                "join transactions t\n" +
+                "on c.category_id = t.category_id\n" +
                 "where c.transaction_type = 'INCOME'\n" +
                 "and c.user_id = ?\n" +
+                "and c.active_yn = 1\n" +
                 "group by c.category_name";
 
         List<PieChartModel> results = jdbcTemplate.query(sql,(rs,rowNum)->{
@@ -35,10 +36,11 @@ public class ChartRepository {
 
     public List<PieChartModel> getPieChartExpenseData(int userId){
         String sql = "select c.category_name as CATEGORY,sum(t.amount) as AMOUNT from categories c\n" +
-                "join transactions t \n" +
-                "on c.category_id = t.category_id \n" +
+                "join transactions t\n" +
+                "on c.category_id = t.category_id\n" +
                 "where c.transaction_type = 'EXPENSE'\n" +
                 "and c.user_id = ?\n" +
+                "and c.active_yn = 1\n" +
                 "group by c.category_name";
 
         List<PieChartModel> results = jdbcTemplate.query(sql,(rs,rowNum)->{
@@ -57,9 +59,11 @@ public class ChartRepository {
                 "from transactions t\n" +
                 "inner join categories c\n" +
                 "on t.category_id = c.category_id\n" +
-                "where date_of_transaction>= DATE_SUB(CURDATE(),INTERVAL 1 YEAR) and c.user_id = ?\n" +
-                "group by month_year, YEAR(date_of_transaction) , MONTH(date_of_transaction) \n" +
-                "order by YEAR(date_of_transaction) ASC , MONTH(date_of_transaction) ASC ;";
+                "where date_of_transaction >= DATE_SUB(CURDATE(),INTERVAL 1 YEAR)\n" +
+                "and c.user_id = ?\n" +
+                "and c.active_yn = 1\n" +
+                "group by month_year, YEAR(date_of_transaction), MONTH(date_of_transaction)\n" +
+                "order by YEAR(date_of_transaction) ASC, MONTH(date_of_transaction) ASC;";
 
         List<LineChartModel> results = jdbcTemplate.query(sql,(rs,rowNum)->{
             LineChartModel lineChartModel = new LineChartModel();
@@ -75,14 +79,16 @@ public class ChartRepository {
 
     public List<LineChartSavingsModel> getSavingsLineChart(int userId){
         String sql = "select date_format(date_of_transaction,'%b %Y') as month_year,\n" +
-                "sum(CASE WHEN c.transaction_type='INCOME' THEN t.amount ELSE 0 END)-\n" +
+                "sum(CASE WHEN c.transaction_type='INCOME' THEN t.amount ELSE 0 END) -\n" +
                 "sum(CASE WHEN c.transaction_type='EXPENSE' THEN t.amount ELSE 0 END) as SAVINGS\n" +
                 "from transactions t\n" +
                 "inner join categories c\n" +
                 "on t.category_id = c.category_id\n" +
-                "where date_of_transaction>= DATE_SUB(CURDATE(),INTERVAL 1 YEAR) and c.user_id = ?\n" +
-                "group by month_year, YEAR(date_of_transaction) , MONTH(date_of_transaction) \n" +
-                "order by YEAR(date_of_transaction) ASC , MONTH(date_of_transaction) ASC ";
+                "where date_of_transaction >= DATE_SUB(CURDATE(),INTERVAL 1 YEAR)\n" +
+                "and c.user_id = ?\n" +
+                "and c.active_yn = 1\n" +
+                "group by month_year, YEAR(date_of_transaction), MONTH(date_of_transaction)\n" +
+                "order by YEAR(date_of_transaction) ASC, MONTH(date_of_transaction) ASC";
 
         List<LineChartSavingsModel> results = jdbcTemplate.query(sql,(rs, rowNum)->{
             LineChartSavingsModel lineChartSavingsModel = new LineChartSavingsModel();

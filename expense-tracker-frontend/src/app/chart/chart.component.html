@@ -1,75 +1,76 @@
-<div class="chart-container">
+<!--
+  CHART COMPONENT (embeddable)
+  ─────────────────────────────────────────────────────────────────────
+  Renders four charts: income pie, expense pie, income-vs-expense
+  trend, and savings bar.  This component is now embedded inside
+  DashboardComponent — it no longer owns the page background or header.
 
-  <!-- PAGE HEADER -->
-  <div class="page-header">
-    <h2 class="page-title">📊 Financial Dashboard</h2>
-    <p class="page-subtitle">Visual breakdown of your income, expenses & savings</p>
-  </div>
+  All canvas IDs must match chart.component.ts — do NOT change them.
+-->
 
-  <!-- LOADING STATE -->
-  <div class="loading-overlay" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>Loading your financial data...</p>
-  </div>
+<!-- ── LOADING STATE ──────────────────────────────────────────────── -->
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>Loading your financial data…</p>
+</div>
 
-  <!-- ERROR STATE -->
-  <div class="error-card" *ngIf="errorMessage">
-    <p>⚠️ {{ errorMessage }}</p>
-    <button class="btn retry-btn" (click)="loadChartData()">Retry</button>
-  </div>
+<!-- ── ERROR STATE ────────────────────────────────────────────────── -->
+<div class="error-card" *ngIf="errorMessage">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+  </svg>
+  <p>{{ errorMessage }}</p>
+  <button class="btn-retry" (click)="loadChartData()">Retry</button>
+</div>
 
-  <!-- CHARTS GRID -->
-  <div class="charts-grid" *ngIf="!isLoading && !errorMessage">
+<!-- ── CHARTS GRID ────────────────────────────────────────────────── -->
+<div class="charts-grid" *ngIf="!isLoading && !errorMessage">
 
-    <!-- ROW 1: Pie Charts side by side -->
-    <div class="chart-row pie-row">
-
-      <!-- Income Pie Chart -->
-      <div class="chart-card">
-        <div class="card-header income-header">
-          <span class="card-icon">💰</span>
-          <h3>Income Distribution</h3>
-        </div>
-        <div class="chart-wrapper pie-wrapper">
-          <canvas id="incomePieChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Expense Pie Chart -->
-      <div class="chart-card">
-        <div class="card-header expense-header">
-          <span class="card-icon">💸</span>
-          <h3>Expense Distribution</h3>
-        </div>
-        <div class="chart-wrapper pie-wrapper">
-          <canvas id="expensePieChart"></canvas>
-        </div>
-      </div>
-
+  <!-- Income Doughnut -->
+  <section class="chart-card">
+    <div class="card-header income-accent">
+      <span class="card-icon">💰</span>
+      <h3>Income Distribution</h3>
     </div>
-
-    <!-- ROW 2: Income vs Expense Line Chart (full width) -->
-    <div class="chart-card full-width">
-      <div class="card-header trend-header">
-        <span class="card-icon">📈</span>
-        <h3>Income vs Expense Trend</h3>
-      </div>
-      <div class="chart-wrapper line-wrapper">
-        <canvas id="incomeVsExpenseChart"></canvas>
-      </div>
+    <div class="chart-canvas-wrap pie-height">
+      <canvas id="incomePieChart" aria-label="Income distribution doughnut chart"></canvas>
     </div>
+  </section>
 
-    <!-- ROW 3: Savings Chart (full width) -->
-    <div class="chart-card full-width">
-      <div class="card-header savings-header">
-        <span class="card-icon">🏦</span>
-        <h3>Monthly Savings</h3>
-      </div>
-      <div class="chart-wrapper line-wrapper">
-        <canvas id="savingsChart"></canvas>
-      </div>
+  <!-- Expense Doughnut -->
+  <section class="chart-card">
+    <div class="card-header expense-accent">
+      <span class="card-icon">💸</span>
+      <h3>Expense Distribution</h3>
     </div>
+    <div class="chart-canvas-wrap pie-height">
+      <canvas id="expensePieChart" aria-label="Expense distribution doughnut chart"></canvas>
+    </div>
+  </section>
 
-  </div>
+  <!-- Income vs Expense Trend (full-width) -->
+  <section class="chart-card span-full">
+    <div class="card-header trend-accent">
+      <span class="card-icon">📈</span>
+      <h3>Income vs Expense Trend</h3>
+    </div>
+    <div class="chart-canvas-wrap line-height">
+      <canvas id="incomeVsExpenseChart" aria-label="Income versus expense trend line chart"></canvas>
+    </div>
+  </section>
+
+  <!-- Monthly Savings (full-width) -->
+  <section class="chart-card span-full">
+    <div class="card-header savings-accent">
+      <span class="card-icon">🏦</span>
+      <h3>Monthly Savings</h3>
+    </div>
+    <div class="chart-canvas-wrap line-height">
+      <canvas id="savingsChart" aria-label="Monthly net savings bar chart"></canvas>
+    </div>
+  </section>
 
 </div>

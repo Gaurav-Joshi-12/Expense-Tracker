@@ -37,6 +37,8 @@ export class LoginComponent {
     this.authService.checkIsValidUser(user).subscribe({
         next:()=>{
           console.log("Logged in Successfully")
+          this.userFormGroup.reset();
+          this.router.navigate(['/dashboard']);
         },
         error:(err:any)=>{
           console.log(err);
@@ -46,9 +48,6 @@ export class LoginComponent {
           alert(this.errorMsg);
         }
       });
-      // console.log(this.studentServ.getStudent);
-      this.userFormGroup.reset;
-      this.router.navigate(['/category']);
     
   }
 

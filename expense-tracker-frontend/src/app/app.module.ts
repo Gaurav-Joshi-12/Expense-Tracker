@@ -13,6 +13,9 @@ import { AuthModuleModule } from './auth/auth.module';
 import { CategoryPageComponent } from './category/category-page/category-page.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { ChartComponent } from './chart/chart.component';
+/* NEW: DashboardComponent wraps Chart + Transaction into one page */
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,9 @@ import { ChartComponent } from './chart/chart.component';
     ForgotPassComponent,
     CategoryPageComponent,
     TransactionComponent,
-    ChartComponent
-    
+    ChartComponent,
+    DashboardComponent,     /* NEW: register the dashboard shell */
+    NavbarComponent         /* NEW: register navbar */
   ],
   imports: [
     AuthModuleModule,

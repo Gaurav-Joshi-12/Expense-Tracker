@@ -13,8 +13,8 @@ export class CategoryPageComponent implements OnInit {
   categoryForm!: FormGroup;
   categories: any[] = [];
   editingCategoryId: number | null = null;
-  
-  constructor(private categoryService:CategoryService,private fb: FormBuilder , private activatedRoute :ActivatedRoute) {}
+
+  constructor(private categoryService: CategoryService, private fb: FormBuilder, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loadCategories()
@@ -33,8 +33,8 @@ export class CategoryPageComponent implements OnInit {
     let value = this.categoryForm.value;
     // let id =  this.activatedRoute.snapshot.paramMap.get("token");
     let id = 1
-    if(!this.categoryService.isEditOn){
-      this.categoryService.createCategory(id ,value).subscribe({
+    if (!this.categoryService.isEditOn) {
+      this.categoryService.createCategory(id, value).subscribe({
         next: () => {
           console.log("Category Created Successfully");
           alert("Category created successfully");
@@ -47,8 +47,8 @@ export class CategoryPageComponent implements OnInit {
         }
       });
     }
-    if(this.categoryService.isEditOn ){
-      this.categoryService.updateCategory(id ,value).subscribe({
+    if (this.categoryService.isEditOn) {
+      this.categoryService.updateCategory(id, value).subscribe({
         next: () => {
           console.log("Category updated Successfully");
           alert("Category updated successfully");
@@ -64,7 +64,7 @@ export class CategoryPageComponent implements OnInit {
     }
   }
 
-  
+
   edit(c: any) {
     this.categoryService.isEditOn = true;
     this.editingCategoryId = c.categoryId;
@@ -81,7 +81,7 @@ export class CategoryPageComponent implements OnInit {
     if (!confirm("Are you sure you want to delete this category?")) {
       return;
     }
-  
+
     this.categoryService.deleteCategory(id).subscribe({
       next: () => {
         console.log("Category Deleted");
@@ -102,9 +102,9 @@ export class CategoryPageComponent implements OnInit {
     });
     this.editingCategoryId = null;
   }
-  
+
   loadCategories() {
-    
+
     this.categoryService.getAll().subscribe({
       next: (res: any) => {
         this.categories = res;

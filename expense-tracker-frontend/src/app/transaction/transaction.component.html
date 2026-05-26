@@ -1,150 +1,213 @@
-<div class="container">
+<!--
+  TRANSACTION COMPONENT (embeddable)
+  ─────────────────────────────────────────────────────────────────────
+  Allows users to add / edit / delete individual transactions and
+  bulk-upload via CSV.  Now embedded inside DashboardComponent — the
+  page-level wrapper (glow, header) has been moved to the parent.
 
-  <!-- PAGE TITLE -->
-  <h2 class="page-title">Transaction Manager</h2>
+  IMPORTANT — all variable bindings below map 1-to-1 to
+  transaction.component.ts.  Do NOT rename any of them.
+-->
 
-  <!-- TRANSACTION FORM -->
-  <div class="form-card">
+<!-- ── LAYOUT: form on the left, table on the right ────────────── -->
+<div class="page-grid">
 
-    <h3>{{ isEditOn ? 'Edit Transaction' : 'Add Transaction' }}</h3>
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- LEFT COLUMN — Add/Edit Form + Bulk Upload                  -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="left-col">
 
-    <form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()">
-
-      <!-- AMOUNT -->
-      <div class="form-group">
-        <label>Amount</label>
-        <input type="number" formControlName="amount" placeholder="Enter amount">
+    <!-- ── Add / Edit Transaction Card ─────────────────────────── -->
+    <section class="card">
+      <div class="card-header">
+        <h2>{{ isEditOn ? 'Edit Transaction' : 'Add Transaction' }}</h2>
+        <p class="subtitle">Fill in the details below</p>
       </div>
 
-      <!-- CATEGORY -->
-      <div class="form-group">
-        <label>Category</label>
-        <select formControlName="categoryId">
-          <option value="">Select Category</option>
-          <option *ngFor="let c of categories" [value]="c.categoryId">
-            {{c.categoryName}} ({{c.categoryType}})
-          </option>
-        </select>
+      <form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()">
+
+        <!-- AMOUNT -->
+        <div class="form-group">
+          <label for="txnAmount">Amount</label>
+          <input
+            type="number"
+            id="txnAmount"
+            formControlName="amount"
+            placeholder="e.g. 1500"
+          />
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="form-group">
+          <label for="txnCategory">Category</label>
+          <select id="txnCategory" formControlName="categoryId">
+            <option value="">Select Category</option>
+            <option *ngFor="let c of categories" [value]="c.categoryId">
+              {{ c.categoryName }} ({{ c.categoryType }})
+            </option>
+          </select>
+        </div>
+
+        <!-- DATE -->
+        <div class="form-group">
+          <label for="txnDate">Date</label>
+          <input
+            type="date"
+            id="txnDate"
+            formControlName="transactionDate"
+          />
+        </div>
+
+        <!-- NOTES -->
+        <div class="form-group">
+          <label for="txnNotes">Notes</label>
+          <textarea
+            id="txnNotes"
+            formControlName="notes"
+            rows="3"
+            placeholder="Optional notes…"
+          ></textarea>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="resetForm()"
+          >
+            Reset
+          </button>
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="transactionForm.invalid"
+          >
+            {{ isEditOn ? 'Update Transaction' : 'Add Transaction' }}
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ── Bulk CSV Upload Card ────────────────────────────────── -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Bulk Upload</h2>
+        <p class="subtitle">Import transactions from a CSV file</p>
       </div>
 
-      <!-- DATE -->
-      <div class="form-group">
-        <label>Date</label>
-        <input type="date" formControlName="transactionDate">
-      </div>
+      <div class="bulk-upload-body">
+        <label class="file-label" for="csvInput">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          {{ selectedFile ? selectedFile.name : 'Choose CSV file…' }}
+        </label>
+        <input
+          type="file"
+          id="csvInput"
+          accept=".csv"
+          (change)="onFileSelected($event)"
+          class="hidden-input"
+        />
 
-      <!-- NOTES -->
-      <div class="form-group">
-        <label>Notes</label>
-        <textarea formControlName="notes" rows="3"></textarea>
-      </div>
-
-      <!-- BUTTONS -->
-      <div class="btn-group">
-
-        <button class="btn primary" type="submit" [disabled]="transactionForm.invalid">
-          {{ isEditOn ? 'Update Transaction' : 'Add Transaction' }}
+        <button
+          class="btn-primary upload-btn"
+          (click)="uploadCSV()"
+          [disabled]="!selectedFile"
+        >
+          Upload CSV
         </button>
-
-        <button class="btn secondary" type="button" (click)="resetForm()">
-          Reset
-        </button>
-
       </div>
-
-    </form>
+    </section>
 
   </div>
 
-  <!-- BULK CSV UPLOAD -->
-<div class="bulk-upload">
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- RIGHT COLUMN — Transaction History Table                   -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <section class="card table-card">
+    <div class="card-header">
+      <h2>Transaction History</h2>
+      <p class="subtitle">All recorded transactions</p>
+    </div>
 
-  <h3>Bulk Upload Transactions (CSV)</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Notes</th>
+            <th style="text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of transactions">
+            <td>{{ t.transactionId }}</td>
+            <td style="font-weight: 500; color: #f1f5f9;">{{ t.categoryName }}</td>
 
-  <input 
-    type="file"
-    accept=".csv"
-    (change)="onFileSelected($event)"
-  >
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'badge-expense': t.categoryType === 'EXPENSE',
+                  'badge-income':  t.categoryType === 'INCOME'
+                }"
+              >
+                {{ t.categoryType }}
+              </span>
+            </td>
 
-  <button 
-    class="btn upload-btn"
-    (click)="uploadCSV()"
-    [disabled]="!selectedFile">
-    Upload CSV
-  </button>
+            <td>₹ {{ t.amount }}</td>
+            <td>{{ t.dateOfTransaction | date:'yyyy-MM-dd' }}</td>
+            <td style="color: #94a3b8;">{{ t.notes }}</td>
 
-</div>
+            <td style="text-align: right;">
+              <button
+                class="action-btn"
+                (click)="editTransaction(t)"
+                title="Edit"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
 
-  <!-- TRANSACTION TABLE -->
+              <button
+                class="action-btn delete"
+                (click)="deleteTransaction(t.transactionId)"
+                title="Delete"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
 
-  <div class="table-card">
-
-    <h3>Transaction History</h3>
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Category</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th>Notes</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr *ngFor="let t of transactions">
-
-          <td>{{t.transactionId}}</td>
-
-          <td>{{t.categoryName}}</td>
-
-          <td>
-            <span 
-              class="badge"
-              [ngClass]="{
-                'expense': t.categoryType === 'EXPENSE',
-                'income': t.categoryType === 'INCOME'
-              }">
-              {{t.categoryType}}
-            </span>
-          </td>
-
-          <td>₹ {{t.amount}}</td>
-
-          <td>{{t.dateOfTransaction | date:'yyyy-MM-dd'}}</td>
-
-          <td>{{t.notes}}</td>
-
-          <td class="actions">
-
-            <button class="edit-btn" (click)="editTransaction(t)">
-              Edit
-            </button>
-
-            <button class="delete-btn" (click)="deleteTransaction(t.transactionId)">
-              Delete
-            </button>
-
-          </td>
-
-        </tr>
-
-        <tr *ngIf="transactions.length === 0">
-          <td colspan="7" class="no-data">
-            No transactions available
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
+          <tr *ngIf="transactions.length === 0">
+            <td colspan="7" class="empty-state">
+              No transactions available. Add one to get started.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
 </div>
