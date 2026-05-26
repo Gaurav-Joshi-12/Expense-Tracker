@@ -54,7 +54,7 @@
           <input
             type="date"
             id="txnDate"
-            formControlName="transactionDate"
+            formControlName="dateOfTransaction"
           />
         </div>
 
@@ -207,6 +207,44 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- ── PAGINATION CONTROLS ──
+         Allows navigating between pages. Enabled dynamically based on
+         the length of transactions loaded on the current page vs rowsPerPage limit.
+    -->
+    <div class="pagination-container" *ngIf="transactions.length > 0 || pageNo > 1">
+      <button 
+        class="pagination-btn" 
+        (click)="goToPrevPage()" 
+        [disabled]="pageNo === 1"
+        title="Previous Page"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Prev</span>
+      </button>
+
+      <div class="page-indicator">
+        Page <span class="current-page">{{ pageNo }}</span>
+      </div>
+
+      <button 
+        class="pagination-btn" 
+        (click)="goToNextPage()" 
+        [disabled]="transactions.length < rowsPerPage"
+        title="Next Page"
+      >
+        <span>Next</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
     </div>
   </section>
 

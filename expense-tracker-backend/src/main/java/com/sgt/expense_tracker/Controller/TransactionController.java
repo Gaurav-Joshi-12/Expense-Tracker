@@ -47,7 +47,7 @@ public class TransactionController {
     }
 
     @GetMapping
-   public ResponseEntity<?> getTransaction(@RequestParam(name = "category" , required= false)String category, @RequestParam(name = "start" , required= false) LocalDate start, @RequestParam(name = "end" , required= false) LocalDate end,@RequestParam(name = "type" , required= false)String type,@RequestParam(name = "sortColumn" , required= false)String sortColumn,@RequestParam(name = "sortDir" , required= false , defaultValue = "DESC") String sortDir ,@RequestParam(name = "rowsPerPage" , required= false , defaultValue = "10") Integer rowsPerPage,@RequestParam(name = "pageNo" , required= false , defaultValue = "1") Integer pageNo, org.springframework.security.core.Authentication auth){
+   public ResponseEntity<?> getTransaction(@RequestParam(name = "category" , required= false)String category, @RequestParam(name = "start" , required= false) LocalDate start, @RequestParam(name = "end" , required= false) LocalDate end,@RequestParam(name = "type" , required= false)String type,@RequestParam(name = "sortColumn" , required= false)String sortColumn,@RequestParam(name = "sortDir" , required= false , defaultValue = "DESC") String sortDir ,@RequestParam(name = "rowsPerPage" , required= false , defaultValue = "7") Integer rowsPerPage,@RequestParam(name = "pageNo" , required= false , defaultValue = "1") Integer pageNo, org.springframework.security.core.Authentication auth){
        try{
            User user = authService.findUserByEmail(auth.getName());
            int id = user.getUserId();

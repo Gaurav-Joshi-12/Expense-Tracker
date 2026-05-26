@@ -79,7 +79,8 @@ public class TransactionRepository {
                 t.setUserId(resultSet.getInt("user_id"));
                 t.setCategoryId(resultSet.getInt("category_id"));
                 t.setAmount(resultSet.getDouble("amount"));
-                t.setDateOfTransaction(LocalDate.parse(resultSet.getString("date_of_transaction")));
+                java.sql.Date dateVal = resultSet.getDate("date_of_transaction");
+                t.setDateOfTransaction(dateVal != null ? dateVal.toLocalDate() : null);
                 t.setActiveYn(resultSet.getInt("active_yn"));
                 t.setNotes(resultSet.getString("notes"));
                 t.setCategoryName(resultSet.getString("category_name"));

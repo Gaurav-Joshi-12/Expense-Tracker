@@ -190,6 +190,10 @@ export class TransactionComponent implements OnInit {
   
   editingTransactionId: number | null = null;
   isEditOn = false; 
+
+  // Pagination State Variables
+  pageNo: number = 1;
+  rowsPerPage: number = 7;
   
   constructor(
     private transactionService: TransactionService,
@@ -206,7 +210,7 @@ export class TransactionComponent implements OnInit {
     this.transactionForm = this.fb.group({
       amount: ['', [Validators.required, Validators.min(0.01)]],
       categoryId: ['', Validators.required],
-      transactionDate: [this.getTodayDateString(), Validators.required],
+      dateOfTransaction: [this.getTodayDateString(), Validators.required],
       notes: ['']
     });
   }
@@ -223,6 +227,7 @@ export class TransactionComponent implements OnInit {
           console.log("Transaction Created Successfully");
           alert("Transaction created successfully");
           this.resetForm();
+          this.pageNo = 1; // Reset to page 1 to see the newly created transaction
           this.loadTransactions();
         },
         error: (err: any) => {
@@ -255,7 +260,7 @@ export class TransactionComponent implements OnInit {
     this.transactionForm.patchValue({
       amount: t.amount,
       categoryId: t.categoryId,
-      transactionDate: t.dateOfTransaction, 
+      dateOfTransaction: t.dateOfTransaction, 
       notes: t.notes
     });
   }
@@ -280,24 +285,55 @@ export class TransactionComponent implements OnInit {
 
   resetForm() {
     this.transactionForm.reset({
-      transactionDate: this.getTodayDateString(),
+      dateOfTransaction: this.getTodayDateString(),
       categoryId: ''
     });
     this.isEditOn = false;
     this.editingTransactionId = null;
   }
   
+  /**
+   * Load transactions for the current page and limit.
+   */
   loadTransactions() {
-    // let userId = 1;
-    this.transactionService.getAllTransactions().subscribe({
+    console.log(`[Frontend] loadTransactions() requesting pageNo: ${this.pageNo}, rowsPerPage: ${this.rowsPerPage}`);
+    // Pass current pageNo and rowsPerPage to the service to utilize backend pagination
+    this.transactionService.getAllTransactions(this.pageNo, this.rowsPerPage).subscribe({
       next: (res: any) => {
+        console.log('[Frontend] Received transactions from backend:', res);
         this.transactions = res;
+        // If we deleted the only item on a high page, go back to the previous page automatically
+        if (this.transactions.length === 0 && this.pageNo > 1) {
+          console.log('[Frontend] Page is empty, auto-decrementing pageNo');
+          this.pageNo--;
+          this.loadTransactions();
+        }
       },
       error: (err: any) => {
-        console.log(err);
-        alert("Error loading transactions");
+        console.error('[Frontend] Error loading transactions:', err);
+        alert(err.error?.body || "Error loading transactions");
       }
     });
+  }
+
+  /**
+   * Navigate to the previous page of transactions.
+   */
+  goToPrevPage() {
+    console.log('[Frontend] goToPrevPage() clicked. Current pageNo was:', this.pageNo);
+    if (this.pageNo > 1) {
+      this.pageNo--;
+      this.loadTransactions();
+    }
+  }
+
+  /**
+   * Navigate to the next page of transactions.
+   */
+  goToNextPage() {
+    console.log('[Frontend] goToNextPage() clicked. Current pageNo was:', this.pageNo);
+    this.pageNo++;
+    this.loadTransactions();
   }
 
   loadCategories() {
@@ -350,6 +386,7 @@ export class TransactionComponent implements OnInit {
       next: () => {
         alert("CSV Uploaded Successfully");
         this.selectedFile = null;
+        this.pageNo = 1; // Reset to page 1 to see the newly bulk-uploaded transactions
         this.loadTransactions();
       },
       error: (err) => {
