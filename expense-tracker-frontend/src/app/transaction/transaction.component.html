@@ -132,16 +132,33 @@
   <!-- RIGHT COLUMN — Transaction History Table                   -->
   <!-- ════════════════════════════════════════════════════════════ -->
   <section class="card table-card">
-    <div class="card-header">
-      <h2>Transaction History</h2>
-      <p class="subtitle">All recorded transactions</p>
+    <div class="card-header table-header-flex">
+      <div>
+        <h2>Transaction History</h2>
+        <p class="subtitle">All recorded transactions</p>
+      </div>
+      <!-- Category Filter Dropdown -->
+      <div class="filter-wrapper">
+        <select 
+          id="categoryFilter" 
+          [(ngModel)]="selectedCategory" 
+          (change)="onCategoryChange()" 
+          class="filter-select"
+          title="Filter by Category"
+        >
+          <option value="">All Categories</option>
+          <option *ngFor="let c of uniqueCategories" [value]="c">
+            {{ c }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="table-scroll">
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th style="width: 50px;">Sr.No</th>
             <th>Category</th>
             <th>Type</th>
             <th>Amount</th>
@@ -151,8 +168,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let t of transactions">
-            <td>{{ t.transactionId }}</td>
+          <tr *ngFor="let t of transactions; let i = index">
+            <td style="color: #94a3b8; font-weight: 600;">{{ ((pageNo - 1) * rowsPerPage) + i + 1 }}</td>
             <td style="font-weight: 500; color: #f1f5f9;">{{ t.categoryName }}</td>
 
             <td>

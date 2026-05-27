@@ -194,6 +194,9 @@ export class TransactionComponent implements OnInit {
   // Pagination State Variables
   pageNo: number = 1;
   rowsPerPage: number = 7;
+
+  // Category Filtering State Variables
+  selectedCategory: string = '';
   
   constructor(
     private transactionService: TransactionService,
@@ -227,6 +230,7 @@ export class TransactionComponent implements OnInit {
           console.log("Transaction Created Successfully");
           alert("Transaction created successfully");
           this.resetForm();
+          this.selectedCategory = ''; // Reset category filter to see the new item
           this.pageNo = 1; // Reset to page 1 to see the newly created transaction
           this.loadTransactions();
         },
@@ -293,14 +297,18 @@ export class TransactionComponent implements OnInit {
   }
   
   /**
-   * Load transactions for the current page and limit.
+   * Load transactions for the current page, limit, and category filter.
    */
   loadTransactions() {
-    console.log(`[Frontend] loadTransactions() requesting pageNo: ${this.pageNo}, rowsPerPage: ${this.rowsPerPage}`);
-    // Pass current pageNo and rowsPerPage to the service to utilize backend pagination
-    this.transactionService.getAllTransactions(this.pageNo, this.rowsPerPage).subscribe({
+    console.log(`[Frontend] loadTransactions() requesting pageNo: ${this.pageNo}, rowsPerPage: ${this.rowsPerPage}, category: "${this.selectedCategory}"`);
+    // Pass current pageNo, rowsPerPage, and selectedCategory to the service
+    this.transactionService.getAllTransactions(this.pageNo, this.rowsPerPage, this.selectedCategory).subscribe({
       next: (res: any) => {
         console.log('[Frontend] Received transactions from backend:', res);
+        if (res && res.length > 0) {
+          // Log Transaction IDs explicitly in the developer console
+          console.log('[Frontend] Transaction IDs on current page:', res.map((t: any) => t.transactionId));
+        }
         this.transactions = res;
         // If we deleted the only item on a high page, go back to the previous page automatically
         if (this.transactions.length === 0 && this.pageNo > 1) {
@@ -334,6 +342,26 @@ export class TransactionComponent implements OnInit {
     console.log('[Frontend] goToNextPage() clicked. Current pageNo was:', this.pageNo);
     this.pageNo++;
     this.loadTransactions();
+  }
+
+  /**
+   * Triggered when the user changes the category filter selection.
+   * Resets the page number to 1 to load the filtered transactions starting from the beginning.
+   */
+  onCategoryChange() {
+    console.log(`[Frontend] Category filter changed to: "${this.selectedCategory}". Resetting pageNo to 1.`);
+    this.pageNo = 1;
+    this.loadTransactions();
+  }
+
+  /**
+   * Getter that returns a list of unique category names from the categories array
+   * to populate the category filter dropdown.
+   */
+  get uniqueCategories(): string[] {
+    if (!this.categories) return [];
+    const names = this.categories.map(c => c.categoryName);
+    return Array.from(new Set(names));
   }
 
   loadCategories() {
@@ -386,6 +414,7 @@ export class TransactionComponent implements OnInit {
       next: () => {
         alert("CSV Uploaded Successfully");
         this.selectedFile = null;
+        this.selectedCategory = ''; // Reset category filter to see bulk transactions
         this.pageNo = 1; // Reset to page 1 to see the newly bulk-uploaded transactions
         this.loadTransactions();
       },

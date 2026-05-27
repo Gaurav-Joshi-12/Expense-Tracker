@@ -79,7 +79,20 @@
           <tbody>
             <tr *ngFor="let c of categories">
               <td style="font-weight: 500; color: #fff;">
-                {{ c.categoryName }}
+                <div class="category-name-cell">
+                  <div class="category-icon-container">
+                    <img 
+                      *ngIf="c.iconUrl; else defaultIcon" 
+                      [src]="c.iconUrl" 
+                      alt="Category Icon" 
+                      class="category-icon-img"
+                    />
+                    <ng-template #defaultIcon>
+                      <span class="category-icon-letter">{{ c.categoryName ? c.categoryName.charAt(0).toUpperCase() : 'C' }}</span>
+                    </ng-template>
+                  </div>
+                  <span>{{ c.categoryName }}</span>
+                </div>
               </td>
               
               <td>

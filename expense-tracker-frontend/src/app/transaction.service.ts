@@ -9,7 +9,7 @@
 // }
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,10 +24,24 @@ export class TransactionService {
 
   /**
    * READ: Get all transactions for a specific user
+   * Modified to accept optional pageNo, rowsPerPage, and category parameters for backend pagination and filtering.
+   * Uses HttpParams to ensure proper URL parameter encoding and serialization.
    */
-  getAllTransactions(): Observable<any> {
-    // Example endpoint: GET /api/transactions/user/1
-    return this.http.get(`${this.apiUrl}`,{withCredentials:true});
+  getAllTransactions(pageNo?: number, rowsPerPage?: number, category?: string): Observable<any> {
+    let params = new HttpParams();
+    
+    if (pageNo !== undefined && pageNo !== null) {
+      params = params.set('pageNo', pageNo.toString());
+    }
+    if (rowsPerPage !== undefined && rowsPerPage !== null) {
+      params = params.set('rowsPerPage', rowsPerPage.toString());
+    }
+    if (category !== undefined && category !== null && category !== '') {
+      params = params.set('category', category);
+    }
+    
+    // Executes GET /api/transaction?pageNo=X&rowsPerPage=Y&category=Z
+    return this.http.get(`${this.apiUrl}`, { params, withCredentials: true });
   }
 
   /**
